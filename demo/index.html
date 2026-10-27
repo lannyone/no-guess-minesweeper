@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:," />
+    <title>no-guess-minesweeper</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #f3ecdf;
+        --ink: #1d1914;
+        --muted: #5e564c;
+        --line: #d9cdb8;
+        --card: #fffaf3;
+        --closed: #e4d9c6;
+        --open: #fffaf3;
+        --opening: #f0e0bf;
+        --flag: #8c2f2f;
+        --mine: #1d1914;
+        --accent: #0e6b4e;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--paper);
+        color: var(--ink);
+        font: 16px/1.5 "Segoe UI", Helvetica, Arial, sans-serif;
+      }
+      header, main { width: min(960px, calc(100% - 32px)); margin: 0 auto; overflow-x: auto; }
+      header { padding: 28px 0 8px; }
+      h1 { font: 600 28px/1.2 Georgia, "Iowan Old Style", serif; margin: 0 0 8px; }
+      .live {
+        margin: 0 0 8px;
+        padding: 10px 12px;
+        background: #efe4cf;
+        border-left: 4px solid var(--accent);
+      }
+      .live a, a { color: var(--accent); }
+      .credit { margin: 0; color: var(--muted); }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 16px;
+        align-items: end;
+        margin: 20px 0;
+      }
+      label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+      label span { font-size: 12px; }
+      input, select, button {
+        font: inherit;
+        color: inherit;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 6px 8px;
+      }
+      button { cursor: pointer; background: var(--ink); color: var(--paper); border-color: var(--ink); }
+      button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); }
+      .status { min-height: 1.5em; color: var(--muted); margin: 0 0 12px; }
+      .board {
+        display: grid;
+        gap: 2px;
+        width: max-content;
+        max-width: 100%;
+        padding: 8px;
+        background: #cfc3ad;
+        border-radius: 8px;
+        touch-action: manipulation;
+      }
+      .cell {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 3px;
+        padding: 0;
+        background: var(--closed);
+        color: var(--ink);
+        font: 700 14px/1 Georgia, serif;
+        cursor: pointer;
+      }
+      .cell.open { background: var(--open); }
+      .cell.opening { background: var(--opening); }
+      .cell.mine { background: #f1d2d2; }
+      .cell.flag { color: var(--flag); }
+      .n1 { color: #2a4f9e; } .n2 { color: #2e7d32; } .n3 { color: #c62828; }
+      .n4 { color: #4527a0; } .n5 { color: #6d4c41; } .n6 { color: #00838f; }
+      .n7 { color: #212121; } .n8 { color: #616161; }
+      .error { color: #8c2f2f; }
+      footer { width: min(880px, calc(100% - 32px)); margin: 24px auto 40px; color: var(--muted); font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>no-guess minesweeper</h1>
+      <p class="live"><strong>Live demo:</strong> <a href="https://campominado.com">https://campominado.com</a></p>
+      <p class="credit">Used in production by Campo Minado (campominado.com).</p>
+    </header>
+    <main>
+      <form class="controls" id="controls">
+        <label>Preset
+          <select id="preset" name="preset">
+            <option value="beginner">Beginner 9×9 / 10</option>
+            <option value="intermediate">Intermediate 16×16 / 40</option>
+            <option value="expert">Expert 30×16 / 99</option>
+          </select>
+        </label>
+        <label>Seed
+          <input id="seed" name="seed" type="number" step="1" value="1" />
+          <span>Used on the first click of a new game.</span>
+        </label>
+        <button type="button" id="flag-mode" aria-pressed="false">Flag</button>
+        <button type="submit" id="reset">New game</button>
+      </form>
+      <p class="status" id="status">Click a cell to start. The first click is always safe.</p>
+      <div class="board" id="board" role="grid" aria-label="Minesweeper board"></div>
+    </main>
+    <footer>
+      <p>This page is plain HTML and JS. It imports the built library from <code>dist/index.js</code>. Run <code>npm run build</code> first, then open it from a local server.</p>
+      <p>The full game, daily puzzle, and patterns live at <a href="https://campominado.com">campominado.com</a>.</p>
+    </footer>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
